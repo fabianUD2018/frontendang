@@ -1,0 +1,31 @@
+<!--(ngSubmit) = 'postClient()'-->
+<form  class =' border border-primary p-5'>
+    <div class ='h3'>
+        <p> Creacion de cliente</p>
+    </div>
+
+    <div class ='form-group'>
+        <label for ='nombre' >ingrese el nombre</label>
+        <input [(ngModel)] ='cliente.nombre' name ='nombre' id ='nombre' class ='form-control' type ='text'> 
+    </div>
+
+    <div class ='form-group'>
+        <label for ='apellido' >ingrese el apellido</label>
+        <input [(ngModel)] ='cliente.apellido' name ='apellido' id ='apellido' class ='form-control' type ='text'> 
+    </div>
+
+    <div class ='form-group'>
+        <label for ='email' >ingrese el email</label>
+        <input [(ngModel)] ='cliente.email' id ='email' name ='email' class ='form-control' type ='email'> 
+    </div>
+
+    <button
+    *ngIf ='!cliente.id else elseblock'
+    type="submit" (click)='postClient()' class ='btn btn-primary' >Crear </button>
+    <ng-template #elseblock>
+        <button
+        *ngIf ='cliente.id'
+        type="submit" (click)='updateCliente()' class ='btn btn-primary' >Editar </button>
+        
+    </ng-template>
+</form>

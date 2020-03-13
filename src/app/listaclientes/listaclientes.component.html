@@ -1,0 +1,27 @@
+<table class=' mt-5 table table-bordered table-striped'>
+    <tbody class ='thead-dark'>
+        <tr>
+            <th>id</th>
+            <th>nombre </th>
+            <th>apellido</th>
+            <th>creado el </th>
+            <th> email </th>
+            
+            <th> Editar o Borrar</th>
+        </tr>
+        <tr  *ngFor='let c of clientes'>
+            <td>{{c.id}}</td>
+            <td>{{c.nombre}}</td>
+            <td>{{c.apellido}}</td>
+            <td>{{c.createdAt}}</td>
+            <td>{{c.email}}</td>
+        
+            <td>
+                <button [routerLink]  = "['/clientes', c.id]" class ='btn btn-primary m-2' type ='button'> Editar</button>
+                <button (click)='deleteCliente(c.id)' routerLink = "/clientes"class ='btn btn-success m-2' type ='button'> Borrar </button>
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
