@@ -1,27 +1,77 @@
 <!--(ngSubmit) = 'postClient()'-->
-<form  class =' border border-primary p-5'>
+<ul class ='class="list-group"'*ngIf='errores' >
+    
+<li class='list-group-item alert alert-danger' 
+*ngFor ='let e of errores'> {{e}}</li>
+</ul>
+
+<form #formulario='ngForm' class =' border border-primary p-5'>
     <div class ='h3'>
         <p> Creacion de cliente</p>
     </div>
 
     <div class ='form-group'>
         <label for ='nombre' >ingrese el nombre</label>
-        <input [(ngModel)] ='cliente.nombre' name ='nombre' id ='nombre' class ='form-control' type ='text'> 
+        <input [(ngModel)] ='cliente.nombre' 
+        name ='nombre' id ='nombre' class ='form-control' 
+        type ='text'
+        #nombre='ngModel'
+        required minlength="4"
+        > 
+        <div class ='alert alert-danger' 
+            *ngIf='nombre.invalid && (nombre.dirty || nombre.touched)'>
+            <div *ngIf='nombre.errors.required'>
+                nombre requerido
+            </div>
+            <div *ngIf='nombre.errors.minlength'>
+                longitud del nombre invalida
+            </div>
+        </div>
     </div>
 
     <div class ='form-group'>
         <label for ='apellido' >ingrese el apellido</label>
-        <input [(ngModel)] ='cliente.apellido' name ='apellido' id ='apellido' class ='form-control' type ='text'> 
+        <input [(ngModel)] ='cliente.apellido' 
+        required
+        #apellido='ngModel'
+        name ='apellido' id ='apellido' 
+        class ='form-control' type ='text'> 
+        <div class ='alert alert-danger' 
+            *ngIf='apellido.invalid && (apellido.dirty || apellido.touched)'>
+            <div *ngIf='apellido.errors.required'>
+                apellido requerido
+            </div>
+            <div *ngIf='apellido.errors.minlength'>
+                longitud del nombre invalida
+            </div>
+        </div>
+   
     </div>
 
     <div class ='form-group'>
         <label for ='email' >ingrese el email</label>
-        <input [(ngModel)] ='cliente.email' id ='email' name ='email' class ='form-control' type ='email'> 
+        <input type ='email' [(ngModel)] ='cliente.email' 
+        type="email"
+        id ='email' 
+        name ='email'
+        #mail='ngModel'
+        required
+         class ='form-control' > 
+        <div class ='alert alert-danger' 
+            *ngIf='mail.invalid && (mail.dirty || mail.touched)'>
+            <div *ngIf='mail.errors.email'>
+                email no valido
+            </div>
+            </div>
+
     </div>
 
     <button
     *ngIf ='!cliente.id else elseblock'
-    type="submit" (click)='postClient()' class ='btn btn-primary' >Crear </button>
+    type="submit" (click)='postClient()' 
+    class ='btn btn-primary' 
+    [disabled]='formulario.form.valid==false'
+    >Crear </button>
     <ng-template #elseblock>
         <button
         *ngIf ='cliente.id'

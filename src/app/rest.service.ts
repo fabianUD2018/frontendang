@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
-import {map } from 'rxjs/operators';
+import {Observable, of, throwError} from 'rxjs';
+import {map, catchError } from 'rxjs/operators';
 import { Cliente } from './cliente';
 import { ThrowStmt } from '@angular/compiler';
+import swal from 'sweetalert2';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,11 +21,24 @@ export class RestService {
 
   postCliente( c:Cliente):Observable<Cliente> {
 
-    return this.repo.post<Cliente>(this.uri+'/api/postclient', c, {headers:this.headers});
+    return this.repo.post<Cliente>(this.uri+'/api/postclient', 
+    c, {headers:this.headers})
+      .pipe (
+        catchError
+            (e=>{
+            if (e.status = 400) return throwError(e);
+               //swal('Error al obtner', e.error.mensaje, 'error');//
+            }
+          )
+        );
   }
 
   getCliente (id:number):Observable<Cliente>{
-    return this.repo.get<Cliente>(this.uri+'/api/clientes/'+id);
+    return this.repo.get<Cliente>(this.uri+'/api/clientes/'+id)
+    .pipe (catchError(e=>{
+      swal('Error al obtner', e.error.mensaje, 'error');
+      return throwError(e);
+    }));
   }
 
   updateCliente (c:Cliente ):Observable<Cliente>{

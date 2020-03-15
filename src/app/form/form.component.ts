@@ -11,6 +11,8 @@ import swal from 'sweetalert2';
 })
 export class FormComponent implements OnInit {
   private cliente: Cliente = new Cliente();
+  private errores :string [];
+
   constructor(private rest:RestService,
     private route:Router,
     private aRoute:ActivatedRoute) { }
@@ -26,6 +28,7 @@ export class FormComponent implements OnInit {
       params=>{
         let id = params['id'];
         if (id ){
+
           this.rest.getCliente(id).subscribe(
              cliente => this.cliente=cliente
           );
@@ -45,8 +48,11 @@ export class FormComponent implements OnInit {
           swal('Cliente creado', 'el cliente se a creado con exito', 'success');
 
       },
-      reject =>{
+      reject =>{//errores
         swal('Rechazado', 'No se pudo crear el usuraio', 'error')
+        this.errores=reject.error.errors as string[];
+        console.log (reject.error.errors as string[]);
+        console.log(reject.status);
       }
     )
     
